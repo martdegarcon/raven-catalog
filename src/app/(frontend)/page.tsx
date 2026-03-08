@@ -131,12 +131,19 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     ? (Array.isArray(categoryParam) ? categoryParam : [categoryParam]).map(id => parseInt(id, 10))
     : []
 
-  // Получаем все категории для построения дерева
-  const { docs: allCategories } = await payload.find({
-    collection: 'categories',
-    depth: 0,
-    limit: 1000,
-  })
+  // Получаем все категории для построения дерева (если таблица ещё не создана — используем пустой массив)
+  let allCategories: Category[] = []
+  try {
+    const result = await payload.find({
+      collection: 'categories',
+      depth: 0,
+      limit: 1000,
+    })
+    allCategories = result.docs
+  } catch {
+    // Таблица categories может отсутствовать до первого push схемы или миграции
+    allCategories = []
+  }
 
   const categoryTree = buildCategoryTree(allCategories)
 
@@ -175,15 +182,27 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     where.category = { in: Array.from(allCategoryIds) }
   }
 
-  // Получаем продукты
-  const { docs, totalDocs, hasNextPage, page } = await payload.find({
-    collection: 'products',
-    limit: 10,
-    page: currentPage,
-    where,
-    sort: sortParam,
-    depth: 1, // Для получения связанных данных (image, category)
-  })
+  // Получаем продукты (если таблицы ещё нет — пустой список)
+  let docs: Product[] = []
+  let totalDocs = 0
+  let hasNextPage = false
+  let page = currentPage
+  try {
+    const result = await payload.find({
+      collection: 'products',
+      limit: 10,
+      page: currentPage,
+      where,
+      sort: sortParam,
+      depth: 1, // Для получения связанных данных (image, category)
+    })
+    docs = result.docs
+    totalDocs = result.totalDocs
+    hasNextPage = result.hasNextPage ?? false
+    page = result.page ?? currentPage
+  } catch {
+    // Таблица products может отсутствовать до push схемы
+  }
 
   // Обрабатываем изображения для каждого продукта
   const productsWithImages = await Promise.all(
