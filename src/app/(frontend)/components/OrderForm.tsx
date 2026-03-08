@@ -159,18 +159,6 @@ export function OrderForm({ productId, productTitle, selectFields = [] }: OrderF
           />
         </div>
 
-        {productId && productTitle && (
-          <div style={{
-            padding: '12px',
-            background: 'var(--base-100)',
-            borderRadius: '4px',
-            fontSize: '14px',
-            color: 'var(--base-secondary-dark)'
-          }}>
-            <strong>{t('order.selectedProduct')}</strong> {productTitle}
-          </div>
-        )}
-
         {selectFields.map((field, i) => {
           const fieldLabel = (lang === 'en' && field.label_en) ? field.label_en : field.label_ru
           const options = field.options ?? []
