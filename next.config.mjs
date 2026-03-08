@@ -2,10 +2,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['payload', '@payloadcms/db-sqlite', 'sharp'],
-  },
-  transpilePackages: ['payload'],
+  serverExternalPackages: ['payload', '@payloadcms/db-sqlite', 'sharp'],
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
