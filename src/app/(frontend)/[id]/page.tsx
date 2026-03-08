@@ -129,6 +129,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                 fill
                 style={{ objectFit: 'cover' }}
                 sizes="(max-width: 768px) 100vw, 50vw"
+                unoptimized={imageUrl.includes('/api/media/')}
               />
             ) : (
               <div style={{ 

@@ -253,6 +253,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                         fill
                         style={{ objectFit: 'cover' }}
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        unoptimized={product.imageUrl.includes('/api/media/')}
                       />
                     </div>
                   ) : (
