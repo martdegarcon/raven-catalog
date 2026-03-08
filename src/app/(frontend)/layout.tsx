@@ -3,6 +3,8 @@ import './styles.css'
 import { LanguageProvider } from './components/LanguageProvider'
 import { BackToSite } from './components/BackToSite'
 
+export const runtime = 'nodejs'
+
 export const metadata = {
   description: 'Raven',
   title: 'Raven Catalog',
