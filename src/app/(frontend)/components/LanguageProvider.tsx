@@ -31,6 +31,22 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         setLanguage(urlLang)
         return urlLang
       }
+      // Fallback: если язык хранится/передаётся на лендинге через URL,
+      // попробуем вытащить `lang` из document.referrer.
+      try {
+        const referrer = document.referrer
+        if (referrer) {
+          const refUrl = new URL(referrer)
+          const refLang = refUrl.searchParams.get('lang')
+          if (refLang === 'ru' || refLang === 'en') {
+            setLanguage(refLang)
+            return refLang
+          }
+        }
+      } catch {
+        // ignore
+      }
+
       // Иначе читаем из localStorage
       return getCurrentLanguage()
     }
