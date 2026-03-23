@@ -750,6 +750,46 @@ svg {
   padding: 12px 24px;
 }
 
+.catalog-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.catalog-lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.catalog-lang-btn {
+  appearance: none;
+  border: 1px solid var(--base-secondary-fade);
+  background: transparent;
+  color: var(--base-secondary-dark);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.catalog-lang-btn:hover {
+  opacity: 0.95;
+  border-color: rgba(226, 226, 226, 0.25);
+}
+
+.catalog-lang-btn.active {
+  opacity: 1;
+  background: rgba(255, 0, 0, 0.08);
+  border-color: rgba(255, 0, 0, 0.35);
+}
+
 .catalog-back-to-site-link {
   display: inline-flex;
   align-items: center;
