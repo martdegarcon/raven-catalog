@@ -1,11 +1,11 @@
 import { getPayload } from 'payload'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Product, Media, Category } from '@/payload-types'
 import config from '@/payload.config'
 import { OrderForm } from '../components/OrderForm'
 import { TranslatedText } from '../components/TranslatedText'
 import { CategoryBadge } from '../components/CategoryBadge'
+import { ProductImageGallery } from '../components/ProductImageGallery'
 import '../styles.css'
 
 interface ProductPageProps {
@@ -145,15 +145,8 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         <div className="product-detail-grid">
           {/* Изображение */}
           <div className="product-detail-image">
-            {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt={productTitle}
-                fill
-                style={{ objectFit: 'cover' }}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                unoptimized={imageUrl.includes('/api/media/')}
-              />
+            {imageUrls.length ? (
+              <ProductImageGallery images={imageUrls} alt={productTitle} />
             ) : (
               <div style={{ 
                 width: '100%', 

@@ -736,6 +736,83 @@ svg {
   border: 1px solid var(--base-secondary-fade);
 }
 
+.product-image-gallery {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.product-image-gallery-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.product-image-gallery:active {
+  cursor: grabbing;
+}
+
+.product-image-gallery-controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.product-image-gallery-btn {
+  pointer-events: auto;
+  appearance: none;
+  border: 1px solid var(--base-secondary-fade);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--base-secondary-dark);
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  font-size: 18px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.product-image-gallery-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.product-image-gallery-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.product-image-gallery-dot {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.product-image-gallery-dot.active {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: scale(1.05);
+}
+
 .product-detail-info {
   display: flex;
   flex-direction: column;
