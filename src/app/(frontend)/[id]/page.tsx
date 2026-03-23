@@ -48,12 +48,14 @@ function getLocalizedPrice(
   }
 }
 
-async function getImageUrl(image: number | Media, payload: any): Promise<string | null> {
-  if (typeof image === 'number') {
+async function getMediaUrl(value: number | Media | null | undefined, payload: any): Promise<string | null> {
+  if (!value) return null
+
+  if (typeof value === 'number') {
     try {
       const media = await payload.findByID({
         collection: 'media',
-        id: image,
+        id: value,
         depth: 0,
       })
       return media?.url || media?.thumbnailURL || null
@@ -61,7 +63,25 @@ async function getImageUrl(image: number | Media, payload: any): Promise<string 
       return null
     }
   }
-  return image?.url || image?.thumbnailURL || null
+
+  return value?.url || value?.thumbnailURL || null
+}
+
+async function getProductImageUrls(product: Product, payload: any): Promise<string[]> {
+  const gallery = (product as any).images as Array<number | Media> | undefined
+  const urls: string[] = []
+
+  if (Array.isArray(gallery) && gallery.length > 0) {
+    const resolved = await Promise.all(gallery.map((item) => getMediaUrl(item, payload)))
+    for (const u of resolved) {
+      if (u) urls.push(u)
+    }
+  } else {
+    const main = await getMediaUrl((product as any).image as number | Media, payload)
+    if (main) urls.push(main)
+  }
+
+  return urls
 }
 
 export default async function ProductPage({ params, searchParams }: ProductPageProps) {
@@ -73,7 +93,8 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const payload = await getPayload({ config: payloadConfig })
 
   let product: Product | null = null
-  let imageUrl: string | null = null
+  let imageUrls: string[] = []
+  let soundUrl: string | null = null
 
   try {
     product = await payload.findByID({
@@ -83,7 +104,8 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
     })
 
     if (product) {
-      imageUrl = await getImageUrl(product.image, payload)
+      imageUrls = await getProductImageUrls(product, payload)
+      soundUrl = await getMediaUrl((product as any).sound as number | Media | undefined, payload)
     }
   } catch (error) {
     console.error('Error fetching product:', error)
@@ -102,6 +124,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
     )
   }
 
+  const imageUrl = imageUrls[0] ?? null
   const category = typeof product.category === 'object' 
     ? product.category 
     : null
@@ -209,14 +232,15 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                   fontSize: '16px',
                   lineHeight: '1.6',
                   color: 'var(--base-secondary-dark)',
-                  opacity: 0.9
+                  opacity: 0.9,
+                  whiteSpace: 'pre-line',
                 }}>
                   {productDescription}
                 </p>
               </div>
             )}
 
-            {product.customFields && product.customFields.length > 0 && (
+            {Array.isArray(product.customFields) && product.customFields.length > 0 && (
               <div style={{ 
                 padding: '24px',
                 background: 'var(--base-200)',
@@ -267,6 +291,28 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                     )
                   })}
                 </dl>
+              </div>
+            )}
+
+            {soundUrl && (
+              <div style={{
+                padding: '24px',
+                background: 'var(--base-200)',
+                borderRadius: '8px',
+                border: '1px solid var(--base-secondary-fade)',
+                marginTop: '24px',
+              }}>
+                <h3 style={{
+                  margin: '0 0 16px 0',
+                  fontSize: '20px',
+                  fontWeight: 900,
+                  textTransform: 'uppercase',
+                  fontFamily: '"Inter", sans-serif',
+                  color: 'var(--base-300)'
+                }}>
+                  <TranslatedText translationKey="product.soundTitle" />
+                </h3>
+                <audio controls src={soundUrl} style={{ width: '100%' }} />
               </div>
             )}
 

@@ -41,7 +41,8 @@ export const translations = {
     },
     product: {
       notFound: "Продукт не найден",
-      additionalSpecs: "Дополнительные характеристики"
+      additionalSpecs: "Дополнительные характеристики",
+      soundTitle: "Звук"
     },
     pagination: {
       showing: "Показано",
@@ -93,7 +94,8 @@ export const translations = {
     },
     product: {
       notFound: "Product not found",
-      additionalSpecs: "Additional specifications"
+      additionalSpecs: "Additional specifications",
+      soundTitle: "Sound"
     },
     pagination: {
       showing: "Showing",

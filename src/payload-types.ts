@@ -177,13 +177,24 @@ export interface Product {
   price_en?: number | null;
   description_ru?: string | null;
   description_en?: string | null;
-  image: number | Media;
+  /**
+   * Основное фото (если `Фотографии` не заполнены) / Main photo (fallback)
+   */
+  image?: (number | null) | Media;
+  /**
+   * Загрузите несколько фотографий для автослайдера на карточке товара / Upload multiple photos for the hover slider
+   */
+  images?: (number | Media)[] | null;
+  /**
+   * Загрузите mp3 файл. Если он задан, на странице товара появится плеер / Upload an mp3 file to show an audio player on the product page
+   */
+  sound?: (number | null) | Media;
   /**
    * Выбери категорию для продукта
    */
   category: number | Category;
   /**
-   * Добавьте любые поля: текст (RU/EN), чекбокс, выбор одного варианта (напр. язык фразы) или ссылку (URL + название). Для типа «Выбор» укажите список опций — пользователь выберет одну при заказе.
+   * Добавьте дополнительные характеристики: текст (RU/EN), чекбокс, выбор одного варианта (напр. язык фразы) или ссылку (URL + название). Для типа «Выбор» укажите список опций — пользователь выберет одну при заказе. / Add additional characteristics: text (RU/EN), checkbox, single-select options (e.g. phrase language) or a link (URL + label). For “select” provide options — the user will pick one during ordering.
    */
   customFields?:
     | {
@@ -421,6 +432,8 @@ export interface ProductsSelect<T extends boolean = true> {
   description_ru?: T;
   description_en?: T;
   image?: T;
+  images?: T;
+  sound?: T;
   category?: T;
   customFields?:
     | T

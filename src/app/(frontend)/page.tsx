@@ -1,5 +1,4 @@
 import { getPayload } from 'payload'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Product, Media, Category } from '@/payload-types'
 import config from '@/payload.config'
@@ -9,6 +8,7 @@ import { Pagination } from './components/Pagination'
 import { CategorySidebar } from './components/CategorySidebar'
 import { TranslatedText } from './components/TranslatedText'
 import { CategoryName } from './components/CategoryName'
+import { ProductImageSlider } from './components/ProductImageSlider'
 
 interface HomePageProps {
   searchParams: Promise<{
@@ -90,12 +90,14 @@ function buildCategoryTree(categories: Category[]): CategoryTreeNode[] {
   return rootCategories
 }
 
-async function getImageUrl(image: number | Media, payload: any): Promise<string | null> {
-  if (typeof image === 'number') {
+async function getMediaUrl(value: number | Media | null | undefined, payload: any): Promise<string | null> {
+  if (!value) return null
+
+  if (typeof value === 'number') {
     try {
       const media = await payload.findByID({
         collection: 'media',
-        id: image,
+        id: value,
         depth: 0,
       })
       return media?.url || media?.thumbnailURL || null
@@ -103,7 +105,27 @@ async function getImageUrl(image: number | Media, payload: any): Promise<string 
       return null
     }
   }
-  return image?.url || image?.thumbnailURL || null
+
+  return value?.url || value?.thumbnailURL || null
+}
+
+async function getProductImageUrls(product: Product, payload: any): Promise<string[]> {
+  // Новый массив `images` (gallery) приоритетнее одиночного `image`
+  const gallery = (product as any).images as Array<number | Media> | undefined
+
+  const urls: string[] = []
+
+  if (Array.isArray(gallery) && gallery.length > 0) {
+    const resolved = await Promise.all(gallery.map((item) => getMediaUrl(item, payload)))
+    for (const u of resolved) {
+      if (u) urls.push(u)
+    }
+  } else {
+    const main = await getMediaUrl((product as any).image as number | Media, payload)
+    if (main) urls.push(main)
+  }
+
+  return urls
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {
@@ -207,10 +229,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   // Обрабатываем изображения для каждого продукта
   const productsWithImages = await Promise.all(
     docs.map(async (product: Product) => {
-      const imageUrl = await getImageUrl(product.image, payload)
+      const imageUrls = await getProductImageUrls(product, payload)
       return {
         ...product,
-        imageUrl,
+        imageUrls,
       }
     })
   )
@@ -245,20 +267,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
               return (
                 <Link key={product.id} href={`/${product.id}?lang=${lang}`} className="product-card">
-                  {product.imageUrl ? (
-                    <div className="product-image">
-                      <Image
-                        src={product.imageUrl}
-                        alt={productTitle}
-                        fill
-                        style={{ objectFit: 'cover' }}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        unoptimized={product.imageUrl.includes('/api/media/')}
-                      />
-                    </div>
+                  {product.imageUrls?.length ? (
+                    <ProductImageSlider images={product.imageUrls} alt={productTitle} />
                   ) : (
                     <div className="product-image-placeholder">
-                      <span>Нет изображения</span>
+                      <TranslatedText translationKey="catalog.noImage" as="span" />
                     </div>
                   )}
                   <div className="product-info">

@@ -44,7 +44,31 @@ export const Products: CollectionConfig = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      required: true,
+      required: false,
+      admin: {
+        description: 'Основное фото (если `Фотографии` не заполнены) / Main photo (fallback)',
+      },
+    },
+    {
+      name: 'images',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
+      required: false,
+      label: 'Фотографии / Photos',
+      admin: {
+        description: 'Загрузите несколько фотографий для автослайдера на карточке товара / Upload multiple photos for the hover slider',
+      },
+    },
+    {
+      name: 'sound',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+      label: 'Звук (mp3) / Audio (mp3)',
+      admin: {
+        description: 'Загрузите mp3 файл. Если он задан, на странице товара появится плеер / Upload an mp3 file to show an audio player on the product page',
+      },
     },
     {
       name: 'category',
@@ -60,9 +84,10 @@ export const Products: CollectionConfig = {
     {
       name: 'customFields',
       type: 'array',
-      label: 'Дополнительные поля',
+      label: 'Дополнительные характеристики / Additional characteristics',
       admin: {
-        description: 'Добавьте любые поля: текст (RU/EN), чекбокс, выбор одного варианта (напр. язык фразы) или ссылку (URL + название). Для типа «Выбор» укажите список опций — пользователь выберет одну при заказе.',
+        description:
+          'Добавьте дополнительные характеристики: текст (RU/EN), чекбокс, выбор одного варианта (напр. язык фразы) или ссылку (URL + название). Для типа «Выбор» укажите список опций — пользователь выберет одну при заказе. / Add additional characteristics: text (RU/EN), checkbox, single-select options (e.g. phrase language) or a link (URL + label). For “select” provide options — the user will pick one during ordering.',
         initCollapsed: false,
       },
       fields: [
