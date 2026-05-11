@@ -29,6 +29,7 @@ export function OrderForm({ productId, productTitle, selectFields = [] }: OrderF
   const [contactType, setContactType] = useState<'email' | 'telegram'>('email')
   const [selectedProducts, setSelectedProducts] = useState<number[]>(productId ? [productId] : [])
   const [selectSelections, setSelectSelections] = useState<Record<number, string>>({})
+  const [consent, setConsent] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
@@ -70,6 +71,7 @@ export function OrderForm({ productId, productTitle, selectFields = [] }: OrderF
         setMessage({ type: 'success', text: t('order.success') })
         setContact('')
         setSelectSelections({})
+        setConsent(false)
         if (!productId) {
           setSelectedProducts([])
         }
@@ -219,9 +221,46 @@ export function OrderForm({ productId, productTitle, selectFields = [] }: OrderF
           </div>
         )}
 
+        <label style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            required
+            style={{ marginTop: '4px', accentColor: 'var(--base-300)' }}
+          />
+          <span style={{ color: 'var(--base-secondary-dark)', opacity: 0.9, fontSize: '14px', lineHeight: '1.4' }}>
+            {lang === 'en' ? (
+              <>
+                By submitting this request, you agree to the{' '}
+                <a href={`/privacy?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                  Privacy Policy
+                </a>{' '}
+                and{' '}
+                <a href={`/personal-data?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                  Personal Data Processing Policy
+                </a>
+                .
+              </>
+            ) : (
+              <>
+                Отправляя заявку, вы соглашаетесь с{' '}
+                <a href={`/privacy?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                  политикой конфиденциальности
+                </a>{' '}
+                и{' '}
+                <a href={`/personal-data?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                  обработкой персональных данных
+                </a>
+                .
+              </>
+            )}
+          </span>
+        </label>
+
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !consent}
           style={{
             width: '100%',
             padding: '14px 24px',
@@ -233,18 +272,18 @@ export function OrderForm({ productId, productTitle, selectFields = [] }: OrderF
             fontSize: '16px',
             fontWeight: 900,
             textTransform: 'uppercase',
-            cursor: isSubmitting ? 'not-allowed' : 'pointer',
-            opacity: isSubmitting ? 0.6 : 1,
+            cursor: (isSubmitting || !consent) ? 'not-allowed' : 'pointer',
+            opacity: (isSubmitting || !consent) ? 0.6 : 1,
             transition: 'all 0.2s'
           }}
           onMouseEnter={(e) => {
-            if (!isSubmitting) {
+            if (!isSubmitting && consent) {
               e.currentTarget.style.background = 'var(--base-200)'
               e.currentTarget.style.borderColor = 'var(--base-secondary-dark)'
             }
           }}
           onMouseLeave={(e) => {
-            if (!isSubmitting) {
+            if (!isSubmitting && consent) {
               e.currentTarget.style.background = 'var(--base-100)'
               e.currentTarget.style.borderColor = 'var(--base-secondary-fade)'
             }

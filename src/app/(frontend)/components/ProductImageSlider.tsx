@@ -7,10 +7,12 @@ export function ProductImageSlider({
   images,
   alt,
   intervalMs = 2200,
+  overlay,
 }: {
   images: string[]
   alt: string
   intervalMs?: number
+  overlay?: React.ReactNode
 }) {
   const safeImages = useMemo(() => images.filter(Boolean), [images])
   const [index, setIndex] = useState(0)
@@ -40,6 +42,7 @@ export function ProductImageSlider({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      {overlay}
       {src ? (
         <Image
           src={src}

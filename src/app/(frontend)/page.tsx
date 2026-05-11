@@ -268,7 +268,15 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               return (
                 <Link key={product.id} href={`/${product.id}?lang=${lang}`} className="product-card">
                   {product.imageUrls?.length ? (
-                    <ProductImageSlider images={product.imageUrls} alt={productTitle} />
+                    <ProductImageSlider
+                      images={product.imageUrls}
+                      alt={productTitle}
+                      overlay={
+                        (product as any).soldOut ? (
+                          <div className="sold-out-badge">{lang === 'en' ? 'SOLD OUT' : 'РАСПРОДАНО'}</div>
+                        ) : null
+                      }
+                    />
                   ) : (
                     <div className="product-image-placeholder">
                       <TranslatedText translationKey="catalog.noImage" as="span" />

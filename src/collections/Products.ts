@@ -7,6 +7,16 @@ export const Products: CollectionConfig = {
   },
   fields: [
     {
+      name: 'soldOut',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Распродано / Sold out',
+      admin: {
+        position: 'sidebar',
+        description: 'Если включено — товар нельзя заказать, на фото появится плашка Sold out / Распродано',
+      },
+    },
+    {
       name: 'title_ru',
       type: 'text',
       required: true,

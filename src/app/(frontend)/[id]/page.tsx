@@ -134,6 +134,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const productDescription = getLocalizedField(product, 'description', lang)
   const categoryName = category ? getLocalizedField(category, 'name', lang) : null
   const { price, symbol } = getLocalizedPrice(product, lang)
+  const isSoldOut = Boolean((product as any).soldOut)
 
   return (
     <div className="catalog">
@@ -146,7 +147,17 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
           {/* Изображение */}
           <div className="product-detail-image">
             {imageUrls.length ? (
-              <ProductImageGallery images={imageUrls} alt={productTitle} />
+              <ProductImageGallery
+                images={imageUrls}
+                alt={productTitle}
+                overlay={
+                  isSoldOut ? (
+                    <div className="sold-out-badge sold-out-badge--detail">
+                      {lang === 'en' ? 'SOLD OUT' : 'РАСПРОДАНО'}
+                    </div>
+                  ) : null
+                }
+              />
             ) : (
               <div style={{ 
                 width: '100%', 
@@ -310,16 +321,36 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
             )}
 
             {/* Форма заявки */}
-            <OrderForm
-              productId={product.id}
-              productTitle={productTitle}
-              selectFields={
-                product.customFields?.filter(
-                  (f): f is typeof f & { options: NonNullable<typeof f.options> } =>
-                    f?.type === 'select' && Array.isArray(f.options) && f.options.length > 0
-                ) ?? []
-              }
-            />
+            {isSoldOut ? (
+              <div
+                style={{
+                  padding: '24px',
+                  background: 'rgba(255, 0, 0, 0.08)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 0, 0, 0.25)',
+                  color: 'var(--base-secondary-dark)',
+                  fontFamily: '"Inter", sans-serif',
+                }}
+              >
+                <div style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+                  <TranslatedText translationKey="product.soldOut" />
+                </div>
+                <div style={{ opacity: 0.9, marginTop: '8px' }}>
+                  <TranslatedText translationKey="product.soldOutHint" />
+                </div>
+              </div>
+            ) : (
+              <OrderForm
+                productId={product.id}
+                productTitle={productTitle}
+                selectFields={
+                  product.customFields?.filter(
+                    (f): f is typeof f & { options: NonNullable<typeof f.options> } =>
+                      f?.type === 'select' && Array.isArray(f.options) && f.options.length > 0
+                  ) ?? []
+                }
+              />
+            )}
           </div>
         </div>
       </div>

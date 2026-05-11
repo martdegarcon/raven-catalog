@@ -37,12 +37,25 @@ export const translations = {
       submit: "Отправить заявку",
       submitting: "Отправка...",
       success: "Заявка успешно отправлена!",
-      error: "Ошибка при отправке заявки"
+      error: "Ошибка при отправке заявки",
+      soldOutError: "Этот товар распродан — заказать нельзя"
     },
     product: {
       notFound: "Продукт не найден",
       additionalSpecs: "Дополнительные характеристики",
-      soundTitle: "Звук"
+      soundTitle: "Звук",
+      soldOut: "Распродано",
+      soldOutHint: "Этот меч сейчас нельзя заказать."
+    },
+    policy: {
+      privacy: {
+        title: "Политика конфиденциальности",
+        content: "Здесь будет текст политики конфиденциальности. Добавьте официальный документ/текст и при необходимости ссылки."
+      },
+      personalData: {
+        title: "Обработка персональных данных",
+        content: "Здесь будет текст согласия/политики обработки персональных данных. Добавьте официальный документ/текст и при необходимости ссылки."
+      }
     },
     pagination: {
       showing: "Показано",
@@ -90,12 +103,25 @@ export const translations = {
       submit: "Submit order",
       submitting: "Submitting...",
       success: "Order successfully submitted!",
-      error: "Error submitting order"
+      error: "Error submitting order",
+      soldOutError: "This item is sold out — it cannot be ordered"
     },
     product: {
       notFound: "Product not found",
       additionalSpecs: "Additional specifications",
-      soundTitle: "Sound"
+      soundTitle: "Sound",
+      soldOut: "Sold out",
+      soldOutHint: "This item cannot be ordered right now."
+    },
+    policy: {
+      privacy: {
+        title: "Privacy Policy",
+        content: "Privacy Policy text goes here. Add your official policy document/text and links if needed."
+      },
+      personalData: {
+        title: "Personal data processing",
+        content: "Personal data processing policy/consent text goes here. Add your official document/text and links if needed."
+      }
     },
     pagination: {
       showing: "Showing",

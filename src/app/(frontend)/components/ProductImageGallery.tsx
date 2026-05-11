@@ -6,9 +6,11 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 export function ProductImageGallery({
   images,
   alt,
+  overlay,
 }: {
   images: string[]
   alt: string
+  overlay?: React.ReactNode
 }) {
   const safeImages = useMemo(() => images.filter(Boolean), [images])
   const [index, setIndex] = useState(0)
@@ -53,6 +55,7 @@ export function ProductImageGallery({
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
     >
+      {overlay}
       <div className="product-image-gallery-media">
         <Image
           src={safeImages[index]}

@@ -171,6 +171,10 @@ export interface Media {
  */
 export interface Product {
   id: number;
+  /**
+   * Если включено — товар нельзя заказать, на фото появится плашка Sold out / Распродано
+   */
+  soldOut?: boolean | null;
   title_ru: string;
   title_en?: string | null;
   price_ru: number;
@@ -425,6 +429,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
+  soldOut?: T;
   title_ru?: T;
   title_en?: T;
   price_ru?: T;

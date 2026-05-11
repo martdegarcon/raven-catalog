@@ -38,6 +38,11 @@ export async function POST(request: NextRequest) {
             return null
           }
 
+          // Sold out: запрещаем создавать заявки
+          if ((product as any).soldOut) {
+            return { soldOut: true, id }
+          }
+
           const productTitle = (product.title_ru as string) || (product.title_en as string) || 'Без названия'
           const category = typeof product.category === 'object' ? product.category : null
           const categoryName = category
@@ -126,7 +131,18 @@ export async function POST(request: NextRequest) {
       })
     )
 
-    const validOrders = orders.filter((o): o is NonNullable<typeof o> => o !== null)
+    const soldOutIds = orders
+      .filter((o): o is { soldOut: true; id: number } => Boolean(o && typeof o === 'object' && 'soldOut' in o))
+      .map((o) => o.id)
+
+    if (soldOutIds.length > 0) {
+      return NextResponse.json(
+        { error: requestLang === 'en' ? 'One or more items are sold out — order cannot be placed' : 'Один или несколько товаров распроданы — заявку отправить нельзя' },
+        { status: 400 }
+      )
+    }
+
+    const validOrders = orders.filter((o): o is NonNullable<typeof o> => o !== null && !(typeof o === 'object' && 'soldOut' in o))
 
     if (validOrders.length === 0) {
       return NextResponse.json(
