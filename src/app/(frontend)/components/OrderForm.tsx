@@ -25,6 +25,7 @@ interface OrderFormProps {
 
 export function OrderForm({ productId, productTitle, selectFields = [] }: OrderFormProps) {
   const { t, lang } = useLanguage()
+  const documentsUrl = 'https://raven-custom.com/documents/'
   const [contact, setContact] = useState('')
   const [contactType, setContactType] = useState<'email' | 'telegram'>('email')
   const [selectedProducts, setSelectedProducts] = useState<number[]>(productId ? [productId] : [])
@@ -233,11 +234,21 @@ export function OrderForm({ productId, productTitle, selectFields = [] }: OrderF
             {lang === 'en' ? (
               <>
                 By submitting this request, you agree to the{' '}
-                <a href={`/privacy?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                <a
+                  href={documentsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'var(--base-300)', textDecoration: 'underline' }}
+                >
                   Privacy Policy
                 </a>{' '}
                 and{' '}
-                <a href={`/personal-data?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                <a
+                  href={documentsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'var(--base-300)', textDecoration: 'underline' }}
+                >
                   Personal Data Processing Policy
                 </a>
                 .
@@ -245,11 +256,21 @@ export function OrderForm({ productId, productTitle, selectFields = [] }: OrderF
             ) : (
               <>
                 Отправляя заявку, вы соглашаетесь с{' '}
-                <a href={`/privacy?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                <a
+                  href={documentsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'var(--base-300)', textDecoration: 'underline' }}
+                >
                   политикой конфиденциальности
                 </a>{' '}
                 и{' '}
-                <a href={`/personal-data?lang=${lang}`} style={{ color: 'var(--base-300)', textDecoration: 'underline' }}>
+                <a
+                  href={documentsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'var(--base-300)', textDecoration: 'underline' }}
+                >
                   обработкой персональных данных
                 </a>
                 .
