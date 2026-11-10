@@ -25,7 +25,7 @@ interface OrderFormProps {
 
 export function OrderForm({ productId, productTitle, selectFields = [] }: OrderFormProps) {
   const { t, lang } = useLanguage()
-  const documentsUrl = 'https://raven-custom.com/documents/'
+  const documentsUrl = `${(process.env.NEXT_PUBLIC_LANDING_URL || 'https://raven-custom-saber.com').replace(/\/+$/, '')}/documents/`
   const [contact, setContact] = useState('')
   const [contactType, setContactType] = useState<'email' | 'telegram'>('email')
   const [selectedProducts, setSelectedProducts] = useState<number[]>(productId ? [productId] : [])
