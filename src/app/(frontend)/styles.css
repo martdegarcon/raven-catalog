@@ -372,6 +372,32 @@ svg {
   left: 16px;
 }
 
+.pre-order-badge {
+  background: #ffffff;
+  color: #ff0000;
+}
+
+.pre-order-note {
+  margin-bottom: 16px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  color: var(--base-secondary-dark);
+  font-family: "Inter", sans-serif;
+}
+
+.pre-order-note__title {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.pre-order-note__hint {
+  margin-top: 6px;
+  opacity: 0.85;
+}
+
 .product-image-placeholder {
   width: 100%;
   height: 250px;

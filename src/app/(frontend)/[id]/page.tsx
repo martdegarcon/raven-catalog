@@ -135,6 +135,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const categoryName = category ? getLocalizedField(category, 'name', lang) : null
   const { price, symbol } = getLocalizedPrice(product, lang)
   const isSoldOut = Boolean((product as any).soldOut)
+  const isPreOrder = !isSoldOut && Boolean((product as any).preOrder)
 
   return (
     <div className="catalog">
@@ -154,6 +155,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                   isSoldOut ? (
                     <div className="sold-out-badge sold-out-badge--detail">
                       {lang === 'en' ? 'SOLD OUT' : 'РАСПРОДАНО'}
+                    </div>
+                  ) : isPreOrder ? (
+                    <div className="sold-out-badge pre-order-badge sold-out-badge--detail">
+                      {lang === 'en' ? 'PRE-ORDER' : 'ПРЕДЗАКАЗ'}
                     </div>
                   ) : null
                 }
@@ -340,6 +345,17 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                 </div>
               </div>
             ) : (
+              <>
+              {isPreOrder && (
+                <div className="pre-order-note">
+                  <div className="pre-order-note__title">
+                    <TranslatedText translationKey="product.preOrder" />
+                  </div>
+                  <div className="pre-order-note__hint">
+                    <TranslatedText translationKey="product.preOrderHint" />
+                  </div>
+                </div>
+              )}
               <OrderForm
                 productId={product.id}
                 productTitle={productTitle}
@@ -350,6 +366,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                   ) ?? []
                 }
               />
+              </>
             )}
           </div>
         </div>

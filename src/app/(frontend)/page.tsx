@@ -274,6 +274,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                       overlay={
                         (product as any).soldOut ? (
                           <div className="sold-out-badge">{lang === 'en' ? 'SOLD OUT' : 'РАСПРОДАНО'}</div>
+                        ) : (product as any).preOrder ? (
+                          <div className="sold-out-badge pre-order-badge">{lang === 'en' ? 'PRE-ORDER' : 'ПРЕДЗАКАЗ'}</div>
                         ) : null
                       }
                     />
