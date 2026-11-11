@@ -45,7 +45,9 @@ export const translations = {
       additionalSpecs: "Дополнительные характеристики",
       soundTitle: "Звук",
       soldOut: "Распродано",
-      soldOutHint: "Этот меч сейчас нельзя заказать."
+      soldOutHint: "Этот меч сейчас нельзя заказать.",
+      preOrder: "Предзаказ",
+      preOrderHint: "Меч доступен под предзаказ — оставьте заявку, и мы свяжемся с вами по срокам."
     },
     policy: {
       privacy: {
@@ -111,7 +113,9 @@ export const translations = {
       additionalSpecs: "Additional specifications",
       soundTitle: "Sound",
       soldOut: "Sold out",
-      soldOutHint: "This item cannot be ordered right now."
+      soldOutHint: "This item cannot be ordered right now.",
+      preOrder: "Pre-order",
+      preOrderHint: "This lightsaber is available for pre-order — leave a request and we'll get back to you about timing."
     },
     policy: {
       privacy: {

@@ -13,6 +13,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'www.raven-custom.com', pathname: '/api/**' },
       { protocol: 'https', hostname: 'www.raven-custom.com', pathname: '/catalog/api/**' },
       { protocol: 'https', hostname: 'catalog.raven-custom.com', pathname: '/api/**' },
+      { protocol: 'https', hostname: 'catalog.raven-custom-saber.com', pathname: '/api/**' },
       { protocol: 'https', hostname: 'raven-catalog.vercel.app', pathname: '/api/**' },
       { protocol: 'http', hostname: 'localhost', pathname: '/api/**', port: '3000' },
     ],

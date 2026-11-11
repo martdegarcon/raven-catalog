@@ -43,7 +43,8 @@ export async function POST(request: NextRequest) {
             return { soldOut: true, id }
           }
 
-          const productTitle = (product.title_ru as string) || (product.title_en as string) || 'Без названия'
+          const baseTitle = (product.title_ru as string) || (product.title_en as string) || 'Без названия'
+          const productTitle = (product as any).preOrder ? `${baseTitle} (предзаказ)` : baseTitle
           const category = typeof product.category === 'object' ? product.category : null
           const categoryName = category
             ? ((category.name_ru as string) || (category.name_en as string) || '')

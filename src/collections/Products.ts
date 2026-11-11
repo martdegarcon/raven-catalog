@@ -17,6 +17,16 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: 'preOrder',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Предзаказ / Pre-order',
+      admin: {
+        position: 'sidebar',
+        description: 'Если включено — товар можно заказать заранее, на фото появится плашка Pre-order / Предзаказ. «Распродано» важнее: если включены оба, показывается «Распродано».',
+      },
+    },
+    {
       name: 'title_ru',
       type: 'text',
       required: true,
