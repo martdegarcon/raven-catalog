@@ -5,6 +5,19 @@ export const Products: CollectionConfig = {
   admin: {
     useAsTitle: 'title_ru',
   },
+  hooks: {
+    beforeValidate: [
+      // Основное фото обязательно в базе: если не выбрано — берём первое из «Фотографий»
+      ({ data }) => {
+        if (!data) return data
+        const first = Array.isArray(data.images) ? data.images[0] : undefined
+        if (!data.image && first) {
+          data.image = typeof first === 'object' && first !== null ? (first as { id: number | string }).id : first
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'soldOut',
@@ -65,8 +78,12 @@ export const Products: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       required: false,
+      validate: (value: unknown, { data }: { data: any }) =>
+        value || (Array.isArray(data?.images) && data.images.length > 0)
+          ? true
+          : 'Добавьте основное фото или хотя бы одно фото в «Фотографии» / Add a main photo or at least one photo',
       admin: {
-        description: 'Основное фото (если `Фотографии` не заполнены) / Main photo (fallback)',
+        description: 'Основное фото. Если не выбрано — возьмётся первое из «Фотографий» / Main photo (defaults to the first of Photos)',
       },
     },
     {
